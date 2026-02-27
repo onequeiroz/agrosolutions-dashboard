@@ -1,0 +1,6 @@
+export const ALERT_TYPES = Object.freeze({
+  HIGH_TEMPERATURE: 1,
+  LOW_TEMPERATURE: 2,
+  HIGH_HUMIDITY: 3,
+  LOW_HUMIDITY: 4,
+});

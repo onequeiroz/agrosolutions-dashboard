@@ -1,30 +1,24 @@
 import { useEffect, useState } from "react";
 import { getSensorHistory } from "../services/api";
+import { POLLING_INTERVALS } from "../config/pollingConfig";
 import SensorChart from "./SensorChart";
 
-const TalhaoCard = ({ talhao }) => {
+const TalhaoCard = ({ talhao, overallStatus }) => {
   const [sensorData, setSensorData] = useState([]);
 
   useEffect(() => {
     loadData();
+
+    const interval = setInterval(() => {
+      loadData();
+    }, POLLING_INTERVALS.METRICS);
+
+    return () => clearInterval(interval);
   }, []);
 
   const loadData = async () => {
     const data = await getSensorHistory(talhao.id);
     setSensorData(data);
-  };
-
-  const getStatusColor = () => {
-    switch (talhao.status) {
-      case "Normal":
-        return "#27ae60";
-      case "Alerta de Seca":
-        return "#f39c12";
-      case "Risco de Praga":
-        return "#e74c3c";
-      default:
-        return "#7f8c8d";
-    }
   };
 
   return (
@@ -41,25 +35,12 @@ const TalhaoCard = ({ talhao }) => {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
           marginBottom: "15px",
         }}
       >
         <h3 style={{ margin: 0 }}>{talhao.nome}</h3>
-
-        <span
-          style={{
-            background: getStatusColor(),
-            color: "white",
-            padding: "6px 12px",
-            borderRadius: "20px",
-            fontSize: "12px",
-            fontWeight: "bold",
-          }}
-        >
-          {talhao.status}
-        </span>
       </div>
 
       <SensorChart data={sensorData} />

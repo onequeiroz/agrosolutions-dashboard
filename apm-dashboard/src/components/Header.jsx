@@ -1,14 +1,10 @@
 const Header = ({ propertyName, overallStatus }) => {
   const getStatusColor = () => {
     switch (overallStatus) {
-      case "Normal":
-        return "#16a34a";
       case "Alerta":
-        return "#f59e0b";
-      case "Crítico":
         return "#dc2626";
       default:
-        return "#64748b";
+        return "#16a34a";
     }
   };
 

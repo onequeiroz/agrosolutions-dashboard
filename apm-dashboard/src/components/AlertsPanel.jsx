@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
 import { getAlerts } from "../services/api";
+import { ALERT_TYPE_LABELS } from "../utils/alertMapper";
+import { POLLING_INTERVALS } from "../config/pollingConfig";
 
 const AlertsPanel = () => {
   const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
     loadAlerts();
+
+    const interval = setInterval(() => {
+      loadAlerts();
+    }, POLLING_INTERVALS.ALERTS);
+
+    return () => clearInterval(interval);
   }, []);
 
   const loadAlerts = async () => {
     const data = await getAlerts();
     setAlerts(data);
   };
+
+  const getAlertMessage = (alertType) => ALERT_TYPE_LABELS[alertType];
 
   return (
     <div
@@ -50,9 +60,9 @@ const AlertsPanel = () => {
             borderRadius: "6px",
           }}
         >
-          <strong>{alert.tipo}</strong>
-          <p style={{ margin: "5px 0" }}>{alert.mensagem}</p>
-          <small>Talhão: {alert.talhaoNome}</small>
+          <strong>{getAlertMessage(alert.tipo)}</strong>
+          <p style={{ margin: "5px 0" }}>{}</p>
+          <small>{alert.talhaoNome}</small>
         </div>
       ))}
     </div>

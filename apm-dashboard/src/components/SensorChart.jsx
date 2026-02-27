@@ -18,12 +18,22 @@ const SensorChart = ({ data }) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="soilMoisture" name="Umidade (%)" />
-        <Line type="monotone" dataKey="temperature" name="Temperatura (°C)" />
         <Line
           type="monotone"
-          dataKey="precipitation"
-          name="Precipitação (mm)"
+          dataKey="humidity"
+          name="Umidade (%)"
+          stroke="#1E88E5"
+          strokeWidth={3}
+          dot={false}
+        />
+
+        <Line
+          type="monotone"
+          dataKey="temperature"
+          name="Temperatura (°C)"
+          stroke="#E53935"
+          strokeWidth={2}
+          dot={false}
         />
       </LineChart>
     </ResponsiveContainer>

@@ -1,0 +1,15 @@
+import { ALERT_TYPES } from "../enum/alertTypes";
+
+export const ALERT_TYPE_LABELS = {
+  [ALERT_TYPES.HIGH_TEMPERATURE]: "Temperatura Alta",
+  [ALERT_TYPES.LOW_TEMPERATURE]: "Temperatura Baixa",
+  [ALERT_TYPES.HIGH_HUMIDITY]: "Umidade Alta",
+  [ALERT_TYPES.LOW_HUMIDITY]: "Umidade Baixa",
+};
+
+export const ALERT_TYPE_COLORS = {
+  [ALERT_TYPES.HIGH_TEMPERATURE]: "#E53935",
+  [ALERT_TYPES.LOW_TEMPERATURE]: "#1E88E5",
+  [ALERT_TYPES.HIGH_HUMIDITY]: "#43A047",
+  [ALERT_TYPES.LOW_HUMIDITY]: "#FB8C00",
+};

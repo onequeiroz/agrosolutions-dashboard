@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { getTalhoes } from "../services/api";
+import { getTalhoes, getAlerts } from "../services/api";
 import TalhaoCard from "../components/TalhaoCard";
 import AlertsPanel from "../components/AlertsPanel";
 import Header from "../components/Header";
 
 const Dashboard = () => {
   const [talhoes, setTalhoes] = useState([]);
+  const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
     loadTalhoes();
+    loadAlerts();
   }, []);
 
   const loadTalhoes = async () => {
@@ -16,14 +18,14 @@ const Dashboard = () => {
     setTalhoes(data);
   };
 
-  // Simulação de status geral
-  const calculateOverallStatus = () => {
-    if (talhoes.some((t) => t.status === "Risco de Praga")) return "Crítico";
-
-    if (talhoes.some((t) => t.status === "Alerta de Seca")) return "Alerta";
-
-    return "Normal";
+  const loadAlerts = async () => {
+    const data = await getAlerts();
+    setAlerts(data);
   };
+
+  // Simulação de status geral
+  const calculateOverallStatus = () =>
+    alerts.length > 0 ? "Alerta" : "Normal";
 
   return (
     <>
@@ -36,7 +38,7 @@ const Dashboard = () => {
         <div className="dashboard-title">Monitoramento em Tempo Real</div>
 
         <div className="alerts-wrapper">
-          <AlertsPanel />
+          <AlertsPanel overallStatus={calculateOverallStatus()} />
         </div>
 
         <div className="talhoes-grid">
