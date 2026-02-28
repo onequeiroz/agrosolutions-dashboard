@@ -1,27 +1,10 @@
-import { useEffect, useState } from "react";
-import { getAlerts } from "../services/api";
 import { ALERT_TYPE_LABELS } from "../utils/alertMapper";
-import { POLLING_INTERVALS } from "../config/pollingConfig";
 
-const AlertsPanel = () => {
-  const [alerts, setAlerts] = useState([]);
-
-  useEffect(() => {
-    loadAlerts();
-
-    const interval = setInterval(() => {
-      loadAlerts();
-    }, POLLING_INTERVALS.ALERTS);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const loadAlerts = async () => {
-    const data = await getAlerts();
-    setAlerts(data);
-  };
-
-  const getAlertMessage = (alertType) => ALERT_TYPE_LABELS[alertType];
+const AlertsPanel = ({ alerts, talhoes }) => {
+  // ===============================
+  // Descobrir tipos únicos de alerta
+  // ===============================
+  const uniqueAlertTypes = [...new Set(alerts.map((alert) => alert.tipo))];
 
   return (
     <div
@@ -45,26 +28,29 @@ const AlertsPanel = () => {
         🚨 Alertas Críticos
       </h2>
 
-      {alerts.length === 0 && (
+      {uniqueAlertTypes.length === 0 && (
         <p style={{ textAlign: "center" }}>Nenhum alerta ativo.</p>
       )}
 
-      {alerts.map((alert) => (
-        <div
-          key={alert.id}
-          style={{
-            borderLeft: "5px solid #e74c3c",
-            background: "#fdecea",
-            padding: "12px",
-            marginBottom: "12px",
-            borderRadius: "6px",
-          }}
-        >
-          <strong>{getAlertMessage(alert.tipo)}</strong>
-          <p style={{ margin: "5px 0" }}>{}</p>
-          <small>{alert.talhaoNome}</small>
-        </div>
-      ))}
+      {uniqueAlertTypes.map((tipo) => {
+        const talhaoNames = talhoes.map((t) => t.nome).join(", ");
+
+        return (
+          <div
+            key={tipo}
+            style={{
+              borderLeft: "5px solid #e74c3c",
+              background: "#fdecea",
+              padding: "12px",
+              marginBottom: "12px",
+              borderRadius: "6px",
+            }}
+          >
+            <strong>{ALERT_TYPE_LABELS[tipo]}</strong>
+            <p style={{ margin: "5px 0" }}>{talhaoNames}</p>
+          </div>
+        );
+      })}
     </div>
   );
 };

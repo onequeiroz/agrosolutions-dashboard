@@ -1,26 +1,6 @@
-import { useEffect, useState } from "react";
-import { getSensorHistory } from "../services/api";
-import { POLLING_INTERVALS } from "../config/pollingConfig";
 import SensorChart from "./SensorChart";
 
-const TalhaoCard = ({ talhao, overallStatus }) => {
-  const [sensorData, setSensorData] = useState([]);
-
-  useEffect(() => {
-    loadData();
-
-    const interval = setInterval(() => {
-      loadData();
-    }, POLLING_INTERVALS.METRICS);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const loadData = async () => {
-    const data = await getSensorHistory(talhao.id);
-    setSensorData(data);
-  };
-
+const TalhaoCard = ({ talhao }) => {
   return (
     <div
       style={{
@@ -43,7 +23,7 @@ const TalhaoCard = ({ talhao, overallStatus }) => {
         <h3 style={{ margin: 0 }}>{talhao.nome}</h3>
       </div>
 
-      <SensorChart data={sensorData} />
+      <SensorChart data={talhao.sensorData} />
     </div>
   );
 };
