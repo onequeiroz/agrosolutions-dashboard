@@ -1,6 +1,6 @@
 export const POLLING_INTERVALS = {
-  METRICS: 2000, // 2 segundos
-  ALERTS: 2000, // 2 segundos
+  METRICS: 30000, // 30 segundos
+  ALERTS: 30000, // 30 segundos
 };
 
 // export const POLLING_INTERVALS = {
